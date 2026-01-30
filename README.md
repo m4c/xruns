@@ -6,12 +6,32 @@ Monitor audio buffer xruns on FreeBSD sound devices.
 
 `xruns` is a lightweight tool for monitoring audio buffer underruns/overruns on FreeBSD. It reads directly from `/dev/sndstat` using the `SNDSTIOC_GET_DEVS` ioctl interface, without relying on `sndctl`.
 
+Particularly useful when configuring USB audio devices (DACs, audio interfaces, etc.) — helps diagnose audible clicks, pops, or glitches, and verify bitperfect configuration.
+
 ### What are xruns?
 
-- **Underrun (playback)**: Application doesn't supply data fast enough — buffer empties, causing clicks or silence.
-- **Overrun (recording)**: Application doesn't read data fast enough — buffer overflows, data is lost.
+An xrun occurs when the audio buffer cannot keep up with the data flow:
 
-Common causes: small buffers, CPU load, wrong scheduler priorities, driver issues.
+- **Underrun (playback)**: Application doesn't supply data fast enough — buffer empties before the sound card needs more samples. Result: clicks, pops, or gaps in audio.
+- **Overrun (recording)**: Application doesn't read data fast enough — buffer overflows and incoming samples are lost. Result: gaps or glitches in recorded audio.
+
+**Common causes:**
+
+- Buffer size too small for system load
+- High CPU usage or spikes
+- Incorrect scheduler priorities
+- Latency settings too aggressive (`hw.snd.latency`, `hw.snd.latency_profile`)
+- Mismatched sample rates between application and hardware
+- USB bandwidth issues (especially with multiple USB audio devices)
+- Driver or hardware problems
+- Improper sample rate or format conversion
+
+**Why monitor xruns?**
+
+- Zero xruns = clean audio path, no glitches
+- Non-zero xruns = something is wrong, needs investigation
+- Increasing xruns over time = systematic problem (CPU, USB, driver)
+- Sudden spike = transient issue (background process, power management)
 
 ## Building
 
@@ -91,6 +111,11 @@ Only shows non-zero xruns when they change:
 - `sndctl(8)` — full sound device control utility
 - `mixer(8)` — volume control
 - `/dev/sndstat` — kernel sound status
+
+## Further reading
+
+- [FreeBSD audio setup: bitperfect, equalizer, realtime](https://m4c.pl/blog/freebsd-audio-setup-bitperfect-equalizer-realtime/) — practical guide to configuring audio on FreeBSD
+- [Vox FreeBSD: How Sound Works](https://freebsdfoundation.org/our-work/journal/browser-based-edition/freebsd-15-0/vox-freebsd-how-sound-works/) — in-depth article about FreeBSD sound(4) internals by Christos Margiolis (author of sndctl)
 
 ## Tips for reducing xruns
 
