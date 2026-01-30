@@ -95,10 +95,11 @@ Only shows non-zero xruns when they change:
 ## Tips for reducing xruns
 
 1. **Increase buffer size** — trade latency for stability
-2. **Enable realtime mode**:
+2. **Lower latency settings**:
    ```bash
    sndctl realtime=1
    ```
+   This sets `hw.snd.latency=0`, `hw.snd.latency_profile=0`, and `kern.timecounter.alloweddeviation=0` — reduces buffering and timing jitter. Note: this is not true realtime scheduling, just lower latency parameters.
 3. **Check CPU usage** — high load causes xruns
 4. **Use MMAP-capable applications** — JACK, Ardour for low latency
 
