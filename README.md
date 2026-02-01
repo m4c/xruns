@@ -4,7 +4,7 @@ Monitor audio buffer xruns on FreeBSD sound devices.
 
 ## Overview
 
-`xruns` is a lightweight tool for monitoring audio buffer underruns/overruns on FreeBSD. It reads directly from `/dev/sndstat` using the `SNDSTIOC_GET_DEVS` ioctl interface, without relying on `sndctl`.
+`xruns` is a lightweight tool for monitoring audio buffer underruns/overruns on FreeBSD. It reads directly from `/dev/sndstat` using the `SNDSTIOC_GET_DEVS` ioctl interface, without relying on `sndctl(8)`.
 
 Particularly useful when configuring USB audio devices (DACs, audio interfaces, etc.) — helps diagnose audible clicks, pops, or glitches, and verify bitperfect configuration.
 
