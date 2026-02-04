@@ -4,7 +4,7 @@ Monitor audio buffer xruns on FreeBSD sound devices.
 
 ## Overview
 
-`xruns` is a lightweight tool for monitoring audio buffer underruns/overruns on FreeBSD. It reads directly from `/dev/sndstat` using the `SNDSTIOC_GET_DEVS` ioctl interface, without relying on `sndctl(8)`.
+`xruns` is a lightweight shell script for monitoring audio buffer underruns/overruns on FreeBSD. It parses output from `sndctl(8)` to extract xrun statistics.
 
 Particularly useful when configuring USB audio devices (DACs, audio interfaces, etc.) — helps diagnose audible clicks, pops, or glitches, and verify bitperfect configuration.
 
@@ -33,18 +33,13 @@ An xrun occurs when the audio buffer cannot keep up with the data flow:
 - Increasing xruns over time = systematic problem (CPU, USB, driver)
 - Sudden spike = transient issue (background process, power management)
 
-## Building
+## Installation
 
-Using FreeBSD make:
-
-```bash
-make
-```
-
-Or manually:
+Copy the script to a directory in your PATH:
 
 ```bash
-cc -o xruns xruns.c -lmixer -lnv
+cp xruns.sh /usr/local/bin/xruns
+chmod +x /usr/local/bin/xruns
 ```
 
 ## Usage
@@ -88,8 +83,8 @@ xruns -d 0 -p -w -i 2
 
 ```
 pcm0:
-dsp0.play.0: 0 xruns
-dsp0.record.0: 0 xruns
+  dsp0.play.0: 0 xruns
+  dsp0.record.0: 0 xruns
 ```
 
 ### Watch mode
@@ -103,8 +98,8 @@ Only shows non-zero xruns when they change:
 
 ## Requirements
 
-- FreeBSD 14.0 or later (requires sound(4) nvlist interface)
-- Libraries: libmixer, libnv
+- FreeBSD 14.0 or later
+- `sndctl(8)` — the script parses its output
 
 ## Related tools
 
@@ -120,12 +115,15 @@ Only shows non-zero xruns when they change:
 ## Tips for reducing xruns
 
 1. **Increase buffer size** — trade latency for stability
+
 2. **Lower latency settings**:
    ```bash
    sndctl realtime=1
    ```
    This sets `hw.snd.latency=0`, `hw.snd.latency_profile=0`, and `kern.timecounter.alloweddeviation=0` — reduces buffering and timing jitter. Note: this is not true realtime scheduling, just lower latency parameters.
+
 3. **Check CPU usage** — high load causes xruns
+
 4. **Use MMAP-capable applications** — JACK, Ardour for low latency
 
 ## License
