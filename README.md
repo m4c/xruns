@@ -8,6 +8,8 @@ Monitor audio buffer xruns on FreeBSD sound devices.
 
 Particularly useful when configuring USB audio devices (DACs, audio interfaces, etc.) — helps diagnose audible clicks, pops, or glitches, and verify bitperfect configuration.
 
+The script is an addendum to the article: [FreeBSD audio diagnostics and optimisation(https://m4c.pl/blog/freebsd-audio-diagnostics-and-optimization/)].
+
 ### What are xruns?
 
 An xrun occurs when the audio buffer cannot keep up with the data flow:
@@ -38,7 +40,7 @@ An xrun occurs when the audio buffer cannot keep up with the data flow:
 Copy the script to a directory in your PATH:
 
 ```bash
-cp xruns.sh /usr/local/bin/xruns
+cp xruns /usr/local/bin/xruns
 chmod +x /usr/local/bin/xruns
 ```
 
