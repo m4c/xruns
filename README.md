@@ -72,7 +72,7 @@ xruns -d 1
 # Show only playback xruns for pcm0
 xruns -d 0 -p
 
-# Watch mode — monitor changes in real-time
+# Watch mode - monitor changes in real-time
 xruns -w
 
 # Watch playback xruns on pcm0, check every 2 seconds
@@ -101,18 +101,18 @@ Only shows non-zero xruns when they change:
 ## Requirements
 
 - FreeBSD 14.0 or later
-- `sndctl(8)` — the script parses its output
+- `sndctl(8)` - the script parses its output
 
 ## Related tools
 
-- `sndctl(8)` — full sound device control utility
-- `mixer(8)` — volume control
-- `/dev/sndstat` — kernel sound status
+- `sndctl(8)` - full sound device control utility
+- `mixer(8)` - volume control
+- `/dev/sndstat` - kernel sound status
 
 ## Further reading
 
-- [FreeBSD audio setup: bitperfect, equalizer, realtime](https://m4c.pl/blog/freebsd-audio-setup-bitperfect-equalizer-realtime/) — practical guide to configuring audio on FreeBSD
-- [Vox FreeBSD: How Sound Works](https://freebsdfoundation.org/our-work/journal/browser-based-edition/freebsd-15-0/vox-freebsd-how-sound-works/) — in-depth article about FreeBSD sound(4) internals by Christos Margiolis (author of sndctl)
+- [FreeBSD audio setup: bitperfect, equalizer, realtime](https://m4c.pl/blog/freebsd-audio-setup-bitperfect-equalizer-realtime/) - practical guide to configuring audio on FreeBSD
+- [Vox FreeBSD: How Sound Works](https://freebsdfoundation.org/our-work/journal/browser-based-edition/freebsd-15-0/vox-freebsd-how-sound-works/) - in-depth article about FreeBSD sound(4) internals by Christos Margiolis (author of sndctl)
 
 ## Tips for reducing xruns
 
@@ -122,7 +122,7 @@ Only shows non-zero xruns when they change:
    ```bash
    sndctl realtime=1
    ```
-   This sets `hw.snd.latency=0`, `hw.snd.latency_profile=0`, and `kern.timecounter.alloweddeviation=0` — reduces buffering and timing jitter. Note: this is not true realtime scheduling, just lower latency parameters.
+   This sets `hw.snd.latency=0`, `hw.snd.latency_profile=0`, and `kern.timecounter.alloweddeviation=0` reduces buffering and timing jitter. Note: this is not true realtime scheduling, just lower latency parameters.
 
 3. **Check CPU usage** — high load causes xruns
 
